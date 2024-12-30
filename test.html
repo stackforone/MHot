@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เกมหมากฮอส</title>
+    <link href="https://fonts.googleapis.com/css2?family=Athiti:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Athiti', sans-serif;
+            background: #3e2723;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #4e342e;
+            width: 100%;
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .profile .info {
+            color: #ffcc80;
+        }
+
+        .profile .info h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .profile .info p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .currency {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .currency div {
+            display: flex;
+            align-items: center;
+            background: #5d4037;
+            padding: 5px 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .currency img {
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            width: 110%;
+            max-width: 900px;
+            margin-top: 50px;
+        }
+
+        .rooms {
+            width: 75%;
+            background: #4e342e;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .room {
+            display: flex;
+            align-items: center;
+            background: #5d4037;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .room img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .room-info {
+            flex: 1;
+            margin-left: 10px;
+        }
+
+        .room-info h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #ffcc80;
+        }
+
+        .room-info p {
+            margin: 0;
+            font-size: 14px;
+            color: #ffd54f;
+        }
+
+        .room button {
+            background: #ff9800;
+            border: none;
+            padding: 6px 15px;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s, box-shadow 0.3s;
+            font-family: 'Athiti', sans-serif;
+        }
+
+        .room button:hover {
+            background: #e65100;
+            transform: translateY(-3px);
+        }
+
+        
+.menu {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    margin-left: 30px; /* ขยับไปทางขวา */
+    margin-top: 30px; /* ขยับลงล่าง */
+}
+
+.menu button {
+    display: flex; /* ใช้ Flexbox เพื่อจัดข้อความและไอคอน */
+    flex-direction: row; /* บังคับให้จัดในแนวนอน */
+    align-items: center; /* จัดให้ข้อความและไอคอนอยู่ตรงกลางแนวตั้ง */
+    justify-content: flex-start; /* จัดข้อความและไอคอนให้อยู่ชิดซ้าย */
+    gap: 10px; /* เพิ่มระยะห่างระหว่างไอคอนและข้อความ */
+    width: 100%; /* ให้ปุ่มมีความกว้างเต็มพื้นที่ */
+    background: #ff9800; /* สีพื้นหลัง */
+    color: #fff; /* สีข้อความ */
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: left; /* จัดข้อความชิดซ้าย */
+    font-family: 'Athiti', sans-serif;
+    margin-right: 20px;
+  
+}
+
+.menu button img {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0; /* ป้องกันการย่อขนาด */
+}
+
+.menu button span {
+    white-space: nowrap; /* ป้องกันข้อความแตกบรรทัด */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.menu button:hover {
+    background: #e65100;
+    transform: translateY(-3px);
+}
+
+.menu button:hover {
+    background: #e65100;
+    transform: translateY(-3px);
+}
+
+        footer {
+            margin-top: auto;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            background: #4e342e;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        footer p {
+            color: #ffcc80;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="profile">
+            <img src="https://via.placeholder.com/50" alt="Profile Picture">
+            <div class="info">
+                <h2>ผู้เล่น: Test</h2>
+                <p>ระดับ: LV 999</p>
+            </div>
+        </div>
+        <div class="currency">
+            <div>
+                <img src="https://via.placeholder.com/20" alt="Gold">
+                <span>5000</span>
+            </div>
+            <div>
+                <img src="https://via.placeholder.com/20" alt="Coins">
+                <span>120</span>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="rooms">
+                <div class="room">
+                    <img src="https://via.placeholder.com/50" alt="Room">
+                    <div class="room-info">
+                        <h3>ห้องที่ 1</h3>
+                        <p>ผู้เล่น: 2/4</p>
+                        <button>เข้าร่วม</button>
+                    </div>
+                </div>
+                <div class="room">
+                    <img src="https://via.placeholder.com/50" alt="Room">
+                    <div class="room-info">
+                        <h3>ห้องที่ 2</h3>
+                        <p>ผู้เล่น: 3/4</p>
+                        <button>เข้าร่วม</button>
+                    </div>
+                </div>
+                <div class="room">
+                    <img src="https://via.placeholder.com/50" alt="Room">
+                    <div class="room-info">
+                        <h3>ห้องที่ 3</h3>
+                        <p>ผู้เล่น: 3/4</p>
+                        <button>เข้าร่วม</button>
+                    </div>
+                </div>
+                <div class="room">
+                    <img src="https://via.placeholder.com/50" alt="Room">
+                    <div class="room-info">
+                        <h3>ห้องที่ 4</h3>
+                        <p>ผู้เล่น: 3/4</p>
+                        <button>เข้าร่วม</button>
+                    </div>
+                </div>
+            </div>
+              
+            <div class="menu">
+    <button>
+        <img src="https://via.placeholder.com/20" alt="Play Icon">
+        <span>เล่นเลย</span>
+    </button>
+    <button>
+        <img src="https://via.placeholder.com/20" alt="Bet Icon">
+        <span>เล่นเดิมพัน</span>
+    </button>
+    <button>
+        <img src="https://via.placeholder.com/20" alt="Select Icon">
+        <span>เลือกห้อง</span>
+    </button>
+    <button>
+        <img src="https://via.placeholder.com/20" alt="Free Icon">
+        <span>ลูกแก้วฟรี</span>
+    </button>
+</div>
+        </div>
+    </main>
+    <footer>
+        <p>© 2024 เกมหมากฮอส</p>
+    </footer>
+</body>
+</html>

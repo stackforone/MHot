@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เกมหมากฮอส</title>
+    <link href="https://fonts.googleapis.com/css2?family=Athiti:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+          body {
+            font-family: 'Athiti', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            background: #3e2723;
+            color: #333;
+            overflow: hidden;
+        }
+
+        .navbar {
+            width: 100%;
+            height: 50px;
+            background: #4e342e;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .navbar .title {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .scores {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            width: 90%;
+            max-width: 350px;
+            background: #ffe0b2;
+            border-radius: 15px;
+            padding: 10px 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .score {
+            text-align: center;
+            flex: 1;
+            font-weight: 600;
+            color: #8e583d;
+        }
+
+        .board-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(8, 40px);
+            grid-template-rows: repeat(8, 40px);
+            gap: 0;
+            background: #f7f1e3;
+        }
+
+        .cell {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .black {
+            background-color: #8e583d;
+        }
+
+        .white {
+            background-color: #f7f1e3;
+        }
+
+        .piece {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .piece.player1 {
+            background-color: #d62828;
+        }
+
+        .piece.player2 {
+            background-color: #003566;
+        }
+
+        .controls {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            background: #ff9800;
+            color: white;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s ease, transform 0.3s ease;
+            font-family: 'Athiti', sans-serif;
+   
+        }
+
+        button:hover {
+            background: #ff6f00;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="menu-icon">☰</div>
+        <div class="title">เกมหมากฮอส</div>
+    </div>
+
+    <div class="scores">
+        <div class="score" id="player1Score">ผู้เล่น 1 : 0</div>
+        <div class="score" id="player2Score">ผู้เล่น 2 : 0</div>
+    </div>
+    <div class="board-container">
+        <div class="board" id="board"></div>
+    </div>
+    <div class="controls">
+        <button onclick="resetGame()">เริ่มเกมใหม่</button>
+    </div>
+
+    <script>
+        const board = document.getElementById("board");
+        const player1Score = document.getElementById("player1Score");
+        const player2Score = document.getElementById("player2Score");
+        const boardSize = 8;
+
+        let selectedPiece = null;
+        let currentPlayer = "player1";
+        let scores = { player1: 0, player2: 0 };
+
+        const createBoard = () => {
+            board.innerHTML = "";
+            for (let row = 0; row < boardSize; row++) {
+                for (let col = 0; col < boardSize; col++) {
+                    const cell = document.createElement("div");
+                    cell.classList.add("cell", (row + col) % 2 === 0 ? "white" : "black");
+                    cell.dataset.row = row;
+                    cell.dataset.col = col;
+                    cell.addEventListener("click", () => movePiece(row, col));
+
+                    if (row < 3 && (row + col) % 2 !== 0) {
+                        const piece = createPiece("player2");
+                        cell.appendChild(piece);
+                    } else if (row > 4 && (row + col) % 2 !== 0) {
+                        const piece = createPiece("player1");
+                        cell.appendChild(piece);
+                    }
+
+                    board.appendChild(cell);
+                }
+            }
+        };
+
+        const createPiece = (player) => {
+            const piece = document.createElement("div");
+            piece.classList.add("piece", player);
+            piece.draggable = false;
+            piece.addEventListener("click", (event) => selectPiece(event, player));
+            return piece;
+        };
+
+        const selectPiece = (event, player) => {
+            if (player !== currentPlayer) return;
+            if (selectedPiece) selectedPiece.classList.remove("selected");
+            selectedPiece = event.target;
+            selectedPiece.classList.add("selected");
+            event.stopPropagation();
+        };
+
+        const movePiece = (row, col) => {
+            if (!selectedPiece) return;
+
+            const targetCell = [...board.children].find(
+                (cell) =>
+                    parseInt(cell.dataset.row) === row && parseInt(cell.dataset.col) === col
+            );
+
+            if (targetCell && targetCell.classList.contains("black")) {
+                const selectedRow = parseInt(selectedPiece.parentElement.dataset.row);
+                const selectedCol = parseInt(selectedPiece.parentElement.dataset.col);
+
+                const rowDiff = Math.abs(row - selectedRow);
+                const colDiff = Math.abs(col - selectedCol);
+
+                // การกินหมาก
+                if (rowDiff === 2 && colDiff === 2) {
+                    const midRow = (row + selectedRow) / 2;
+                    const midCol = (col + selectedCol) / 2;
+
+                    const midCell = [...board.children].find(
+                        (cell) =>
+                            parseInt(cell.dataset.row) === midRow &&
+                            parseInt(cell.dataset.col) === midCol
+                    );
+
+                    if (
+                        midCell &&
+                        midCell.hasChildNodes() &&
+                        !targetCell.hasChildNodes()
+                    ) {
+                        const capturedPiece = midCell.firstChild;
+                        if (!capturedPiece.classList.contains(currentPlayer)) {
+                            midCell.removeChild(capturedPiece);
+                            scores[currentPlayer]++;
+                            updateScores();
+                            targetCell.appendChild(selectedPiece);
+                            selectedPiece.classList.remove("selected");
+                            selectedPiece = null;
+                            currentPlayer =
+                                currentPlayer === "player1" ? "player2" : "player1";
+                            return;
+                        }
+                    }
+                }
+
+                // การเดินปกติ
+                if (rowDiff === 1 && colDiff === 1 && !targetCell.hasChildNodes()) {
+                    targetCell.appendChild(selectedPiece);
+                    selectedPiece.classList.remove("selected");
+                    selectedPiece = null;
+                    currentPlayer =
+                        currentPlayer === "player1" ? "player2" : "player1";
+                }
+            }
+        };
+
+        const updateScores = () => {
+            player1Score.textContent = `ผู้เล่น 1: ${scores.player1}`;
+            player2Score.textContent = `ผู้เล่น 2: ${scores.player2}`;
+        };
+
+        const resetGame = () => {
+            currentPlayer = "player1";
+            selectedPiece = null;
+            scores = { player1: 0, player2: 0 };
+            updateScores();
+            createBoard();
+        };
+
+        createBoard();
+    </script>
+</body>
+</html>
